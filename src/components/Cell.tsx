@@ -1,18 +1,17 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React, {ReactElement} from 'react';
+import {BombInfo} from '../utils/GenerateBoard';
 
 interface Props {
   onClick?: () => void;
-  isBomb?: boolean;
   uncovered?: boolean;
-  neighborCount?: number;
+  bombInfo?: BombInfo;
 }
 
 export default function Cell({
   onClick,
-  isBomb,
   uncovered,
-  neighborCount,
+  bombInfo,
 }: Props): ReactElement {
   if (!uncovered) {
     return (
@@ -26,16 +25,18 @@ export default function Cell({
     );
   } else {
     return (
-      <div
+      <p
         style={{
+          textAlign: 'center',
           height: '20px',
           width: '20px',
+          margin: '0px',
           backgroundColor: 'gray',
           borderStyle: 'solid',
           borderWidth: '1px',
         }}>
-        <p style={{textAlign: 'center'}}>{isBomb ? '*' : neighborCount}</p>
-      </div>
+        {bombInfo === 'bomb' ? '*' : bombInfo}
+      </p>
     );
   }
 }

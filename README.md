@@ -7,4 +7,4 @@ todo
 -create game loop
 -auto reveal surrounding cells if empty 
 
-pomodoros: 2
+pomodoros: 3
