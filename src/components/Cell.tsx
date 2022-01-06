@@ -24,6 +24,7 @@ export default function Cell({
         }}></button>
     );
   } else {
+    const cellSymbol = bombInfo === 'bomb' ? '*' : bombInfo === 0 ? ' ' : bombInfo;
     return (
       <p
         style={{
@@ -35,7 +36,7 @@ export default function Cell({
           borderStyle: 'solid',
           borderWidth: '1px',
         }}>
-        {bombInfo === 'bomb' ? '*' : bombInfo}
+        {cellSymbol}
       </p>
     );
   }
