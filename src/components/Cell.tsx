@@ -15,6 +15,8 @@ export default function Cell({
 }: Props): ReactElement {
 
   const [uncovered, setUncovered] = useState(false);
+  const [flagged, setFlagged] = useState(false);
+
   useEffect(() => {
     if (uncovered && bombInfo === "bomb" && OnDetonate) {
       OnDetonate();
@@ -22,19 +24,20 @@ export default function Cell({
   }, [uncovered]);
 
   useEffect(() => {
-    setUncovered(!isPlaying)
-    
+    setUncovered(!isPlaying);
+    setFlagged(false);
   }, [isPlaying])
 
   if (!uncovered) {
     return (
       <button
-        onClick={()=>setUncovered(true)}
+        onClick={() => setUncovered(true)}
+        onContextMenu={()=> setFlagged(!flagged)}
         style={{
           height: '20px',
           width: '20px',
           borderStyle: 'outset',
-        }}></button>
+        }}>{flagged && "|>" }</button>
     );
   } else {
     const cellSymbol = bombInfo === 'bomb' ? '*' : bombInfo === 0 ? ' ' : bombInfo;
