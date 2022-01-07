@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import GenerateBoard from '../utils/GenerateBoard';
+import GenerateBoard, { BombInfo } from '../utils/GenerateBoard';
 import Cell from './Cell';
 
 interface Props {
@@ -19,28 +19,32 @@ export default function Board({
 }: Props): ReactElement {
   //generate bomb positions
 
-  const [board, setBoard] = useState<JSX.Element[]>([]);
-
+  const [board, setBoard] = useState<BombInfo[][]>(GenerateBoard(height, width, bombCount));
+  const [boardElements, setBoardElements] = useState<JSX.Element[]>([]);
 	
+  useEffect(() => {
+    if(isPlaying)
+      setBoard(GenerateBoard(height, width, bombCount))
+    
+  }, [isPlaying, height, width, bombCount]);
 
   useEffect(() => {
-
-    const bombLayout = GenerateBoard(height, width, bombCount);
-    let newBoard: JSX.Element[] = [];
+    let newBoardElements: JSX.Element[] = [];
     for (let i = 0; i < height; i++) {
       let row: JSX.Element[] = [];
       for (let j = 0; j < width; j++) {
         row.push(
           <Cell
             OnDetonate={OnDetonate}
-            bombInfo={bombLayout[i][j]}
+            bombInfo={board[i][j]}
             isPlaying={isPlaying}></Cell>,
         );
       }
-      newBoard.push(<div style={{display: 'flex'}}>{row}</div>);
+      newBoardElements.push(<div style={{display: 'flex'}}>{row}</div>);
     }
-    setBoard(newBoard);
-  }, [isPlaying, height, width, bombCount, isPlaying]);
-
-  return <div style={{display: 'flex', flexDirection: 'column', borderStyle:"inset"}}>{board}</div>;
+    setBoardElements(newBoardElements);
+  
+  }, [board, isPlaying])
+  
+  return <div style={{display: 'flex', flexDirection: 'column', borderStyle:"inset"}}>{boardElements}</div>;
 }
