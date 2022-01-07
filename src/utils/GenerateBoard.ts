@@ -19,7 +19,6 @@ export default function GenerateBoard(
     let x = randomInt(width);
     let y = randomInt(height);
 
-    console.log(`bomb placed at ${x}, ${y}`);
     if (board[x][y] !== 'bomb') {
       board[x][y] = 'bomb';
       bombsPlaced++;

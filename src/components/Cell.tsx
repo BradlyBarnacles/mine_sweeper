@@ -37,6 +37,7 @@ export default function Cell({
           height: '20px',
           width: '20px',
           borderStyle: 'outset',
+          boxSizing: 'border-box'
         }}>{flagged && "|>" }</button>
     );
   } else {
@@ -51,6 +52,7 @@ export default function Cell({
           backgroundColor: 'gray',
           borderStyle: 'solid',
           borderWidth: '1px',
+          boxSizing: 'border-box'
         }}>
         {cellSymbol}
       </p>
