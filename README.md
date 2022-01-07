@@ -8,7 +8,6 @@ todo
 -add flag
 	-better symbol
 	-should stop accidental click
--add timer -reset on new game
 -allow reset while game still in play
 -cells should be same size covered or uncovered
 

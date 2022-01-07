@@ -7,16 +7,22 @@ import Board from './components/Board';
 
 function App() {
   const [IsPlaying, setIsPlaying] = useState(true);
-  const [startTime, setStartTime] = useState(new Date());
+  const [startTime, setStartTime] = useState<Date | null>(new Date());
   const [Time, setTime] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTime(new Date().getUTCSeconds() - startTime.getUTCSeconds());
+      if (startTime === null) setTime(0);
+      else setTime(new Date().getUTCSeconds() - startTime.getUTCSeconds());
     }, 1000);
 
     return () => clearTimeout(timer);
-  });
+  }, [startTime, Time]);
+
+  useEffect(() => {
+    if (IsPlaying) setStartTime(new Date());
+    else setStartTime(null);
+  }, [IsPlaying]);
 
   document.addEventListener('contextmenu', event => {
     event.preventDefault();
@@ -32,7 +38,6 @@ function App() {
           justifyContent: 'space-around',
           marginBottom: '10px',
           borderStyle: 'inset',
-    
         }}>
         <p style={{background: 'black', color: 'white', width: '30px'}}>
           {Time}
@@ -45,7 +50,8 @@ function App() {
           style={{
             width: '50px',
             height: '30px',
-          alignSelf:"center"}}>
+            alignSelf: 'center',
+          }}>
           reset
         </button>
         <p style={{background: 'black', color: 'white', width: '30px'}}>5</p>
