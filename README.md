@@ -5,4 +5,9 @@ todo
 -create game loop
 -auto reveal surrounding cells if empty 
 
-pomodoros: 5
+
+states
+playing - Lost  inn app
+board state - in board
+
+pomodoros: 6

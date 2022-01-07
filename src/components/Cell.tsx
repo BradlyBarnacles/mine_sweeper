@@ -1,22 +1,35 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {BombInfo} from '../utils/GenerateBoard';
 
 interface Props {
-  onClick?: () => void;
-  uncovered?: boolean;
   bombInfo?: BombInfo;
+  OnDetonate?: () => void;
+  isPlaying?: boolean;
 }
 
 export default function Cell({
-  onClick,
-  uncovered,
   bombInfo,
+  OnDetonate,
+  isPlaying
 }: Props): ReactElement {
+
+  const [uncovered, setUncovered] = useState(false);
+  useEffect(() => {
+    if (uncovered && bombInfo === "bomb" && OnDetonate) {
+      OnDetonate();
+    }
+  }, [uncovered]);
+
+  useEffect(() => {
+    setUncovered(!isPlaying)
+    
+  }, [isPlaying])
+
   if (!uncovered) {
     return (
       <button
-        onClick={onClick}
+        onClick={()=>setUncovered(true)}
         style={{
           height: '20px',
           width: '20px',
