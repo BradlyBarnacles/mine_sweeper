@@ -42,5 +42,5 @@ export default function Board({
     setBoard(newBoard);
   }, [isPlaying, height, width, bombCount, isPlaying]);
 
-  return <div style={{display: 'flex', flexDirection: 'column'}}>{board}</div>;
+  return <div style={{display: 'flex', flexDirection: 'column', borderStyle:"inset"}}>{board}</div>;
 }
