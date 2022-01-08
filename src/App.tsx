@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import Board from './components/Board';
 import { GameState } from './utils/types';
-
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 
 function App() {
@@ -40,7 +40,8 @@ function App() {
 
   return (
     <div
-      style={{display: 'inline-block', padding: '10px', borderStyle: 'outset'}}>
+      style={{ display: 'inline-block', padding: '10px', borderStyle: 'outset' }}>
+      
       <div
         style={{
           display: 'flex',

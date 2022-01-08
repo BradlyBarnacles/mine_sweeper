@@ -3,9 +3,7 @@ Minesweeper
 todo
 -auto reveal surrounding cells if empty 
 -Add options for editing board size
--add mine count
--add flag
-	-better symbol
+-add mines remaining  count
 -Win condition/detection
 -fix -ve timer bug
 
@@ -14,4 +12,4 @@ states
 playing - Lost  inn app
 board state - in board
 
-pomodoros: 12
+pomodoros: 13

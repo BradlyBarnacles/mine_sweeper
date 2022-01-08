@@ -1,4 +1,6 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFlag, faBomb } from "@fortawesome/free-solid-svg-icons";
+
 import React, {ReactElement, useEffect, useState} from 'react';
 import {BombInfo} from '../utils/GenerateBoard';
 import { GameState } from '../utils/types';
@@ -45,10 +47,9 @@ export default function Cell({
           width: '20px',
           borderStyle: 'outset',
           boxSizing: 'border-box'
-        }}>{flagged && "|>" }</button>
+        }}>{flagged && <FontAwesomeIcon icon={faFlag} size='sm' style={{ color: "red"}}/> }</button>
     );
   } else {
-    const cellSymbol = bombInfo === 'bomb' ? '*' : bombInfo === 0 ? ' ' : bombInfo;
     return (
       <p
         style={{
@@ -61,7 +62,7 @@ export default function Cell({
           borderWidth: '1px',
           boxSizing: 'border-box'
         }}>
-        {cellSymbol}
+        { bombInfo === 'bomb' ?<FontAwesomeIcon icon={faBomb} size='xs' style={{ marginTop: "5px",verticalAlign: "top"}}/> : bombInfo === 0 ? ' ' : bombInfo}
       </p>
     );
   }
