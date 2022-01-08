@@ -1,34 +1,38 @@
 import React, {useEffect, useRef, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Cell from './components/Cell';
-import GenerateBoard from './utils/GenerateBoard';
 import Board from './components/Board';
+import { GameState } from './utils/types';
+
+
 
 function App() {
-  const [IsPlaying, setIsPlaying] = useState<boolean | null>(true);
+  const [gameState, setGameState] = useState<GameState>("playing");
   const [startTime, setStartTime] = useState<Date | null>(new Date());
   const [Time, setTime] = useState(0);
 
+  //Update timer every second
   useEffect(() => {
     const timer = setTimeout(() => {
       if (startTime === null) setTime(0);
-      else setTime(new Date().getUTCSeconds() - startTime.getUTCSeconds());
+      else setTime(Math.floor((new Date().getTime() - startTime.getTime())/1000));
     }, 1000);
-
     return () => clearTimeout(timer);
   }, [startTime, Time]);
 
+  //Resets timer start time once new game started. If not playing timer is stopped
   useEffect(() => {
-    if (IsPlaying) setStartTime(new Date());
+    if (gameState === "playing") setStartTime(new Date());
     else setStartTime(null);
-  }, [IsPlaying]);
+  }, [gameState]);
 
 
+  //Immediately start playing after reset. 
   useEffect(() => {
-    if (IsPlaying === null)
-      setIsPlaying(true);
-  }, [IsPlaying])
+    if (gameState === "resetting")
+      setGameState("playing");
+  }, [gameState])
+
+  const mineCountRef = useRef(null)
 
   document.addEventListener('contextmenu', event => {
     event.preventDefault();
@@ -50,7 +54,7 @@ function App() {
         </p>
         <button
           onClick={() => {
-            setIsPlaying(null);
+            setGameState("resetting");
           }}
           style={{
             width: '50px',
@@ -59,15 +63,15 @@ function App() {
           }}>
           reset
         </button>
-        <p style={{background: 'black', color: 'white', width: '30px'}}>5</p>
+        <p ref={mineCountRef} style={{background: 'black', color: 'white', width: '30px'}}>5</p>
       </div>
       <Board
         height={10}
         width={10}
         bombCount={20}
-        isPlaying={IsPlaying}
+        gameState={gameState}
         OnDetonate={() => {
-          setIsPlaying(false);
+          setGameState("lost");
         }}></Board>
     </div>
   );

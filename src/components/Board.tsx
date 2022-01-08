@@ -1,12 +1,13 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import GenerateBoard, { BombInfo } from '../utils/GenerateBoard';
+import { GameState } from '../utils/types';
 import Cell from './Cell';
 
 interface Props {
   height: number;
   width: number;
   bombCount: number;
-  isPlaying: boolean | null;
+  gameState: GameState;
   OnDetonate: () => void;
 }
 
@@ -14,20 +15,22 @@ export default function Board({
   height,
   width,
   bombCount,
-  isPlaying,
+  gameState,
   OnDetonate,
+
 }: Props): ReactElement {
-  //generate bomb positions
 
-  const [board, setBoard] = useState<BombInfo[][]>(GenerateBoard(height, width, bombCount));
+  const [bombPlacements, setBombPlacements] = useState<BombInfo[][]>(GenerateBoard(height, width, bombCount));
   const [boardElements, setBoardElements] = useState<JSX.Element[]>([]);
-	
+  
+	//Generate new bomb placements when game starts playing
   useEffect(() => {
-    if(isPlaying)
-      setBoard(GenerateBoard(height, width, bombCount))
+    if(gameState === 'playing')
+      setBombPlacements(GenerateBoard(height, width, bombCount))
     
-  }, [isPlaying, height, width, bombCount]);
+  }, [gameState, height, width, bombCount]);
 
+  //Update the board Elements 
   useEffect(() => {
     let newBoardElements: JSX.Element[] = [];
     for (let i = 0; i < height; i++) {
@@ -36,15 +39,15 @@ export default function Board({
         row.push(
           <Cell
             OnDetonate={OnDetonate}
-            bombInfo={board[i][j]}
-            isPlaying={isPlaying}></Cell>,
+            bombInfo={bombPlacements[i][j]}
+            gameState={gameState}></Cell>,
         );
       }
       newBoardElements.push(<div style={{display: 'flex'}}>{row}</div>);
     }
     setBoardElements(newBoardElements);
   
-  }, [board, isPlaying])
+  }, [bombPlacements, gameState])
   
   return <div style={{display: 'flex', flexDirection: 'column', borderStyle:"inset"}}>{boardElements}</div>;
 }

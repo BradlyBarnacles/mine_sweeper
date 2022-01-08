@@ -1,39 +1,44 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React, {ReactElement, useEffect, useState} from 'react';
 import {BombInfo} from '../utils/GenerateBoard';
+import { GameState } from '../utils/types';
 
 interface Props {
   bombInfo?: BombInfo;
   OnDetonate?: () => void;
-  isPlaying: boolean | null;
+  gameState: GameState;
 }
 
 export default function Cell({
   bombInfo,
   OnDetonate,
-  isPlaying
+  gameState
 }: Props): ReactElement {
 
   const [uncovered, setUncovered] = useState(false);
   const [flagged, setFlagged] = useState(false);
 
+  //detonate if bomb uncovered
   useEffect(() => {
     if (uncovered && bombInfo === "bomb" && OnDetonate) {
       OnDetonate();
     }
   }, [uncovered]);
 
+  //update cell display when game state change
   useEffect(() => {
-    if (isPlaying ===null) return;
+    if (gameState === "resetting") return; 
 
-    setUncovered(!isPlaying);
+    if (gameState === "lost") setUncovered(true);
+    if (gameState === "playing") setUncovered(false);
+    
     setFlagged(false);
-  }, [isPlaying])
+  }, [gameState])
 
   if (!uncovered) {
     return (
       <button
-        onClick={() => setUncovered(true)}
+        onClick={() =>{ if(!flagged) setUncovered(true)}}
         onContextMenu={()=> setFlagged(!flagged)}
         style={{
           height: '20px',
