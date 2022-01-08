@@ -6,7 +6,7 @@ import GenerateBoard from './utils/GenerateBoard';
 import Board from './components/Board';
 
 function App() {
-  const [IsPlaying, setIsPlaying] = useState(true);
+  const [IsPlaying, setIsPlaying] = useState<boolean | null>(true);
   const [startTime, setStartTime] = useState<Date | null>(new Date());
   const [Time, setTime] = useState(0);
 
@@ -23,6 +23,12 @@ function App() {
     if (IsPlaying) setStartTime(new Date());
     else setStartTime(null);
   }, [IsPlaying]);
+
+
+  useEffect(() => {
+    if (IsPlaying === null)
+      setIsPlaying(true);
+  }, [IsPlaying])
 
   document.addEventListener('contextmenu', event => {
     event.preventDefault();
@@ -44,8 +50,7 @@ function App() {
         </p>
         <button
           onClick={() => {
-            setIsPlaying(false);
-            setIsPlaying(true);
+            setIsPlaying(null);
           }}
           style={{
             width: '50px',

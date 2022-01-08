@@ -6,7 +6,7 @@ interface Props {
   height: number;
   width: number;
   bombCount: number;
-  isPlaying: boolean;
+  isPlaying: boolean | null;
   OnDetonate: () => void;
 }
 

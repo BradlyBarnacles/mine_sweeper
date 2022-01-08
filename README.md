@@ -8,12 +8,12 @@ todo
 	-better symbol
 	-should stop accidental click
 -allow reset while game still in play
--cells should be same size covered or uncovered
 -Win condition/detection
+-fix -ve timer bug
 
 
 states
 playing - Lost  inn app
 board state - in board
 
-pomodoros: 10
+pomodoros: 11

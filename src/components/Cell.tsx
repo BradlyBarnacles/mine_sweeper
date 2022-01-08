@@ -5,7 +5,7 @@ import {BombInfo} from '../utils/GenerateBoard';
 interface Props {
   bombInfo?: BombInfo;
   OnDetonate?: () => void;
-  isPlaying?: boolean;
+  isPlaying: boolean | null;
 }
 
 export default function Cell({
@@ -24,6 +24,8 @@ export default function Cell({
   }, [uncovered]);
 
   useEffect(() => {
+    if (isPlaying ===null) return;
+
     setUncovered(!isPlaying);
     setFlagged(false);
   }, [isPlaying])
