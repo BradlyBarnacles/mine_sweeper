@@ -7,14 +7,18 @@ import { GameState } from '../utils/types';
 
 interface Props {
   bombInfo?: BombInfo;
-  OnDetonate?: () => void;
   gameState: GameState;
+  OnDetonate: () => void;
+  OnFlagChanged: (hasFlag: boolean) => void;
+  OnUncovered: () => void;
 }
 
 export default function Cell({
   bombInfo,
   OnDetonate,
-  gameState
+  gameState,
+  OnFlagChanged,
+  OnUncovered
 }: Props): ReactElement {
 
   const [uncovered, setUncovered] = useState(false);
@@ -25,6 +29,8 @@ export default function Cell({
     if (uncovered && bombInfo === "bomb" && OnDetonate) {
       OnDetonate();
     }
+    if (uncovered)
+      OnUncovered()
   }, [uncovered]);
 
   //update cell display when game state change
@@ -41,7 +47,7 @@ export default function Cell({
     return (
       <button
         onClick={() =>{ if(!flagged) setUncovered(true)}}
-        onContextMenu={()=> setFlagged(!flagged)}
+        onContextMenu={(e) => { setFlagged(!flagged); OnFlagChanged(!flagged);  e.preventDefault()}}
         style={{
           height: '20px',
           width: '20px',

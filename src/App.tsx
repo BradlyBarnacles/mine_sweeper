@@ -32,12 +32,9 @@ function App() {
       setGameState("playing");
   }, [gameState])
 
-  const mineCountRef = useRef(null)
+  const [bombCount, setBombCount] = useState(10)
 
-  document.addEventListener('contextmenu', event => {
-    event.preventDefault();
-  });
-
+ 
   return (
     <div
       style={{ display: 'inline-block', padding: '10px', borderStyle: 'outset' }}>
@@ -64,7 +61,7 @@ function App() {
           }}>
           reset
         </button>
-        <p ref={mineCountRef} style={{background: 'black', color: 'white', width: '30px'}}>5</p>
+        <p  style={{background: 'black', color: 'white', width: '30px'}}>{bombCount}</p>
       </div>
       <Board
         height={10}
@@ -73,7 +70,11 @@ function App() {
         gameState={gameState}
         OnDetonate={() => {
           setGameState("lost");
-        }}></Board>
+        }}
+        OnFlagChange={(count) => {
+          setBombCount(20 - count);
+        }}
+        OnWin={()=>alert("you won")}></Board>
     </div>
   );
 }
