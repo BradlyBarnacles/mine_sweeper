@@ -1,0 +1,31 @@
+.cell {
+  height: 20px;
+  width: 20px;
+  box-sizing: border-box;
+}
+
+.covered.cell {
+  border-style: outset;
+}
+
+.uncovered.cell {
+  text-align: center;
+  margin: 0px;
+  line-height: 18px;
+  background-color: gray;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  font-weight: bold;
+}
+
+.flag {
+  color: red;
+  margin-bottom: 2px;
+  margin-left: -2px;
+}
+
+.bomb {
+  margin-top: '5px';
+  vertical-align: top;
+}

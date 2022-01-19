@@ -36,3 +36,34 @@
     transform: rotate(360deg);
   }
 }
+
+.game-container {
+  display: inline-block;
+  padding: 10px;
+  border-style: outset;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 10px;
+  border-style: inset;
+}
+
+.counter-box {
+  background: black;
+  color: white;
+  width: 30px;
+}
+
+.reset-button {
+  width: 50px;
+  height: 30px;
+  align-self: center;
+}
+
+.select {
+  width:300px;
+  margin: 20px;
+}

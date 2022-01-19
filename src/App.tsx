@@ -1,80 +1,77 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import Board from './components/Board';
-import { GameState } from './utils/types';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {GameState} from './utils/types';
+import Select from 'react-select';
+import Timer from './components/Timer';
 
+const gameSizeOptions = [
+  {name: 'Beginner', height: 9, width: 9, bombs: 10},
+  {name: 'Intermediate', height: 16, width: 16, bombs: 40},
+  {name: 'Expert', height: 16, width: 30, bombs: 99},
+];
 
 function App() {
-  const [gameState, setGameState] = useState<GameState>("playing");
-  const [startTime, setStartTime] = useState<Date | null>(new Date());
-  const [Time, setTime] = useState(0);
+  const [gameState, setGameState] = useState<GameState>('playing');
+  const [gameSize, setGameSize] = useState(gameSizeOptions[0]);
+  const [bombCount, setBombCount] = useState(10);
 
-  //Update timer every second
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (startTime === null) setTime(0);
-      else setTime(Math.floor((new Date().getTime() - startTime.getTime())/1000));
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [startTime, Time]);
+    setGameState('resetting');
+  }, [gameSize]);
 
-  //Resets timer start time once new game started. If not playing timer is stopped
-  useEffect(() => {
-    if (gameState === "playing") setStartTime(new Date());
-    else setStartTime(null);
-  }, [gameState]);
-
-
-  //Immediately start playing after reset. 
-  useEffect(() => {
-    if (gameState === "resetting")
-      setGameState("playing");
-  }, [gameState])
-
-  const [bombCount, setBombCount] = useState(10)
-
- 
   return (
-    <div
-      style={{ display: 'inline-block', padding: '10px', borderStyle: 'outset' }}>
-      
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginBottom: '10px',
-          borderStyle: 'inset',
-        }}>
-        <p style={{background: 'black', color: 'white', width: '30px'}}>
-          {Time}
-        </p>
-        <button
-          onClick={() => {
-            setGameState("resetting");
+    <div>
+      <div className="game-container">
+        <div className="top-container">
+          <Timer
+            className="counter-box"
+            isRunning={gameState === 'playing'}
+            reset={gameState === 'resetting'}
+            OnStop={(time: number) => {
+              if (gameState === 'won') alert(`you beat ${gameSize.name} difficulty in ${time} seconds`);
+            }}
+          />
+          <button
+            onClick={() => {
+              setGameState('resetting');
+            }}
+            className="reset-button">
+            reset
+          </button>
+          <p className="counter-box">{bombCount}</p>
+        </div>
+        <Board
+          height={gameSize.height}
+          width={gameSize.width}
+          bombCount={gameSize.bombs}
+          gameState={gameState}
+          OnDetonate={() => {
+            setGameState('lost');
           }}
-          style={{
-            width: '50px',
-            height: '30px',
-            alignSelf: 'center',
-          }}>
-          reset
-        </button>
-        <p  style={{background: 'black', color: 'white', width: '30px'}}>{bombCount}</p>
+          OnFlagChange={count => {
+            setBombCount(gameSize.bombs - count);
+          }}
+          OnStart={() => setGameState('playing')}
+          OnWin={() => setGameState('won')}></Board>
       </div>
-      <Board
-        height={10}
-        width={10}
-        bombCount={20}
-        gameState={gameState}
-        OnDetonate={() => {
-          setGameState("lost");
-        }}
-        OnFlagChange={(count) => {
-          setBombCount(20 - count);
-        }}
-        OnWin={()=>alert("you won")}></Board>
+      <Select
+        className='select'
+        value={gameSize}
+        getOptionLabel={size => size.name}
+        options={gameSizeOptions}
+        backspaceRemovesValue={true}
+        onChange={option =>
+          setGameSize(
+            option as {
+              name: string;
+              height: number;
+              width: number;
+              bombs: number;
+            },
+          )
+        }
+      />
     </div>
   );
 }
